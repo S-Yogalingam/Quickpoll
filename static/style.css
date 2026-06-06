@@ -1,0 +1,238 @@
+/* QuickPoll — dark "liquid glass" theme layered over Bootstrap 5.
+   Pure CSS, no JavaScript anywhere in the app. */
+
+:root {
+  --bg: #0b0d12;
+  --bg-2: #11141c;
+  --card: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --text: #e8eaf0;
+  --text-dim: #9aa0ad;
+  --accent: #6d8bff;
+  --accent-2: #a06bff;
+  --good: #38d39f;
+  --danger: #ff6b6b;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  background: radial-gradient(1200px 800px at 15% -10%, #1a1f33 0%, transparent 55%),
+    radial-gradient(1000px 700px at 110% 10%, #2a1840 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+/* ---- Brand ---- */
+.brand { display: flex; align-items: center; margin-bottom: 6px; }
+.brand a { text-decoration: none; color: inherit; }
+.brand .logo { font-size: 26px; }
+.brand h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+
+.tagline { color: var(--text-dim); margin: 0 0 28px; font-size: 14px; }
+
+.footer { margin-top: 28px; text-align: center; font-size: 13px; }
+
+/* ---- Card (glass) ---- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+.card + .card { margin-top: 18px; }
+
+h2 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.2px; }
+h2.h-sm { font-size: 16px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 16px 0 6px;
+  font-weight: 600;
+}
+
+/* ---- Form controls (override Bootstrap for dark glass) ---- */
+.form-control,
+.form-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 11px;
+  padding: 12px 14px;
+  font-size: 15px;
+}
+.form-control:focus,
+.form-select:focus {
+  background: rgba(109, 139, 255, 0.08);
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: 0 0 0 0.2rem rgba(109, 139, 255, 0.18);
+}
+.form-control::placeholder { color: #5d6470; }
+.form-control[readonly] { background: rgba(255, 255, 255, 0.03); }
+.form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239aa0ad' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px 12px;
+  padding-right: 40px;
+}
+.form-select option { background: var(--bg-2); color: var(--text); }
+.option-input { margin-top: 8px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+
+/* ---- Buttons (custom, to avoid Bootstrap .btn clash) ---- */
+.btn-glass {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  transition: transform 0.08s, box-shadow 0.15s;
+  box-shadow: 0 6px 20px rgba(109, 139, 255, 0.3);
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.btn-glass:hover { box-shadow: 0 8px 26px rgba(109, 139, 255, 0.42); color: #fff; }
+.btn-glass:active { transform: translateY(1px); }
+.btn-glass.full { width: 100%; margin-top: 20px; }
+.btn-glass.ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  box-shadow: none;
+  border: 1px solid var(--card-border);
+}
+.btn-glass.ghost:hover { color: var(--text); }
+.btn-glass.danger {
+  background: linear-gradient(135deg, #ff7676, #ff4d6d);
+  box-shadow: 0 6px 20px rgba(255, 77, 109, 0.3);
+}
+
+.muted { color: var(--text-dim); font-size: 13px; }
+.link { color: var(--accent); text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+/* ---- Alerts ---- */
+.alert-glass {
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ffb3b3;
+  padding: 10px 14px;
+  border-radius: 11px;
+  font-size: 14px;
+  margin-top: 14px;
+}
+
+/* ---- Vote options (radio cards, no JS) ---- */
+.vote-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid var(--card-border);
+  color: var(--text);
+  border-radius: 13px;
+  padding: 15px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.vote-option:hover { border-color: var(--accent); background: rgba(109, 139, 255, 0.08); }
+.vote-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--text-dim);
+  flex: 0 0 auto;
+  transition: border-color 0.15s, background 0.15s;
+}
+.vote-option:has(.vote-radio:checked) {
+  border-color: var(--good);
+  background: rgba(56, 211, 159, 0.1);
+}
+.vote-option:has(.vote-radio:checked) .radio-dot {
+  border-color: var(--good);
+  background: var(--good);
+  box-shadow: inset 0 0 0 4px var(--bg-2);
+}
+.vote-option:has(.vote-radio:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.vote-label { flex: 1; }
+
+/* ---- Results bars ---- */
+.results { margin-top: 6px; }
+.result { margin-top: 14px; }
+.result-head { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 7px; gap: 10px; }
+.result-head .pct { color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.result.winner .result-head .label { color: var(--good); font-weight: 700; }
+.you-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid rgba(109, 139, 255, 0.4);
+  background: rgba(109, 139, 255, 0.12);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-left: 6px;
+}
+.bar-track { height: 12px; background: rgba(255, 255, 255, 0.06); border-radius: 999px; overflow: hidden; }
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.result.winner .bar-fill { background: linear-gradient(90deg, #38d39f, #1fb787); }
+.total { text-align: center; color: var(--text-dim); font-size: 14px; margin-top: 18px; }
+
+/* ---- Pills ---- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+.pill.live { color: var(--good); border-color: rgba(56, 211, 159, 0.4); background: rgba(56, 211, 159, 0.1); }
+.pill.live .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); animation: pulse 1.6s infinite; }
+.pill.closed { color: #ffb3b3; border-color: rgba(255, 107, 107, 0.35); background: rgba(255, 107, 107, 0.1); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.head-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+
+/* ---- QR ---- */
+.qr { display: flex; justify-content: center; margin-top: 18px; }
+.qr img { border-radius: 12px; background: #fff; padding: 12px; width: 200px; height: 200px; }
+
+.divider { height: 1px; background: var(--card-border); margin: 20px 0; }

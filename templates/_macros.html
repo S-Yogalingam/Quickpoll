@@ -1,0 +1,24 @@
+{# Reusable server-rendered results bar chart (no JS). #}
+{% macro results(poll) %}
+  {% set total = poll.total_votes %}
+  {% set max_votes = (poll.options | map(attribute='votes') | max) if poll.options else 0 %}
+  <div class="results">
+    {% for o in poll.options %}
+      {% set pct = (o.votes / total * 100) if total > 0 else 0 %}
+      {% set is_winner = total > 0 and o.votes == max_votes and max_votes > 0 %}
+      <div class="result {{ 'winner' if is_winner else '' }}">
+        <div class="result-head">
+          <span class="label">
+            {{ o.text }}
+            {% if poll.voted_option_id == o.id %}<span class="you-badge">your vote</span>{% endif %}
+          </span>
+          <span class="pct">{{ o.votes }} · {{ '%.0f' % pct }}%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: {{ pct }}%"></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="total">{{ total }} vote{{ '' if total == 1 else 's' }} total</p>
+{% endmacro %}

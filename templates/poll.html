@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "_macros.html" import results %}
+{% block title %}{{ poll.title }} — QuickPoll{% endblock %}
+
+{% block head_extra %}
+  {% if auto_refresh %}
+    {# Strict no-JS live updates: reload the page every 5s while open. #}
+    <meta http-equiv="refresh" content="5" />
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="head-row">
+    <h2>{{ poll.title }}</h2>
+    {% if poll.is_open %}
+      <span class="pill live"><span class="dot"></span>{{ 'Live' if show_results else 'Open' }}</span>
+    {% else %}
+      <span class="pill closed">{{ 'Expired' if poll.expired else 'Closed' }}</span>
+    {% endif %}
+  </div>
+
+  {% if poll.is_open and poll.expires_at %}
+    <p class="muted mt-1">Auto-closes {{ poll.expires_at }}</p>
+  {% endif %}
+
+  {% if vote_error %}
+    <div class="alert-glass" role="alert">{{ vote_error }}</div>
+  {% endif %}
+
+  {% if not show_results %}
+    {# ---- Voting form ---- #}
+    <form method="post" action="{{ url_for('page_vote', poll_id=poll.id) }}">
+      {% for o in poll.options %}
+        <label class="vote-option">
+          <input class="vote-radio" type="radio" name="option_id" value="{{ o.id }}" required />
+          <span class="radio-dot"></span>
+          <span class="vote-label">{{ o.text }}</span>
+        </label>
+      {% endfor %}
+      <button class="btn-glass full" type="submit">Vote</button>
+      <p class="muted text-center mt-3 mb-0">No login required · one vote per person</p>
+    </form>
+  {% else %}
+    {# ---- Results ---- #}
+    {% if just_voted %}
+      <p class="muted mt-1">✓ Thanks for voting! Results update live.</p>
+    {% elif poll.has_voted %}
+      <p class="muted mt-1">You voted in this poll. Results update live.</p>
+    {% endif %}
+    {{ results(poll) }}
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2 class="h-sm">Share this poll</h2>
+  <label>Voting link</label>
+  <input class="form-control mono" type="text" value="{{ public_url }}" readonly />
+  <div class="qr">
+    <img src="{{ public_qr }}" alt="QR code linking to this poll" />
+  </div>
+</div>
+{% endblock %}

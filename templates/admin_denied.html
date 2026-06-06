@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Access denied — QuickPoll{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Can't open dashboard</h2>
+  <p class="muted">Missing or invalid admin token. Use your private creator link.</p>
+  <a class="btn-glass" href="/p/{{ poll_id }}">View public poll</a>
+</div>
+{% endblock %}

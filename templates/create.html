@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="tagline">Create polls, share instantly, watch votes roll in.</p>
+
+<form class="card" method="post" action="/">
+  <h2>Create a poll</h2>
+
+  {% if error %}
+    <div class="alert-glass" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <label for="title">Question</label>
+  <input
+    class="form-control"
+    id="title"
+    name="title"
+    placeholder="What should we build next?"
+    maxlength="300"
+    value="{{ form_title or '' }}"
+    required
+  />
+
+  <label>Options <span class="muted">(2–5 — leave the rest blank)</span></label>
+  {% set opts = form_options if form_options else ['', ''] %}
+  {% for i in range(1, 6) %}
+    <input
+      class="form-control option-input"
+      type="text"
+      name="option_{{ i }}"
+      placeholder="Option {{ i }}{{ ' (optional)' if i > 2 else '' }}"
+      maxlength="200"
+      value="{{ opts[i-1] if opts|length >= i else '' }}"
+      {{ 'required' if i <= 2 else '' }}
+    />
+  {% endfor %}
+
+  <label for="expires_in_minutes">Auto-close after (optional)</label>
+  <select class="form-select" id="expires_in_minutes" name="expires_in_minutes">
+    <option value="">No expiry</option>
+    <option value="5"     {{ 'selected' if form_expiry == '5' }}>5 minutes</option>
+    <option value="60"    {{ 'selected' if form_expiry == '60' }}>1 hour</option>
+    <option value="1440"  {{ 'selected' if form_expiry == '1440' }}>1 day</option>
+    <option value="10080" {{ 'selected' if form_expiry == '10080' }}>1 week</option>
+  </select>
+
+  <button class="btn-glass full" type="submit">Create poll</button>
+  <p class="muted text-center mt-3 mb-0">No login required · share with a link</p>
+</form>
+{% endblock %}

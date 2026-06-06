@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "_macros.html" import results %}
+{% block title %}Dashboard — {{ poll.title }} — QuickPoll{% endblock %}
+
+{% block head_extra %}
+  {% if auto_refresh %}
+    <meta http-equiv="refresh" content="5" />
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<p class="tagline">Creator dashboard</p>
+
+<div class="card">
+  <div class="head-row">
+    <h2>{{ poll.title }}</h2>
+    {% if poll.is_open %}
+      <span class="pill live"><span class="dot"></span>Live</span>
+    {% else %}
+      <span class="pill closed">{{ 'Expired' if poll.expired else 'Closed' }}</span>
+    {% endif %}
+  </div>
+  <p class="muted mt-1">
+    Created {{ poll.created_at }}{% if poll.expires_at %} · auto-closes {{ poll.expires_at }}{% endif %}
+  </p>
+  {{ results(poll) }}
+</div>
+
+<div class="card">
+  <h2 class="h-sm">Manage</h2>
+  {% if poll.is_open %}
+    <p class="muted">Closing the poll stops new votes. This cannot be undone.</p>
+    <form method="post" action="{{ url_for('page_close', poll_id=poll.id) }}">
+      <input type="hidden" name="token" value="{{ token }}" />
+      <button class="btn-glass danger" type="submit">Close poll</button>
+    </form>
+  {% else %}
+    <p class="muted">This poll is closed. Final results are shown above.</p>
+  {% endif %}
+
+  <div class="divider"></div>
+
+  <label>Public voting link</label>
+  <input class="form-control mono" type="text" value="{{ public_url }}" readonly />
+  <div class="qr">
+    <img src="{{ public_qr }}" alt="QR code linking to this poll" />
+  </div>
+</div>
+{% endblock %}

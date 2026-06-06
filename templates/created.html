@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Poll created — QuickPoll{% endblock %}
+{% block content %}
+<p class="tagline">Your poll is live 🎉</p>
+
+<div class="card">
+  <h2>{{ poll.title }}</h2>
+  <p class="muted">Share this link — anyone can vote, no login needed.</p>
+  <label>Public voting link</label>
+  <input class="form-control mono" type="text" value="{{ public_url }}" readonly />
+  <div class="qr">
+    <img src="{{ public_qr }}" alt="QR code linking to this poll" />
+  </div>
+  <a class="btn-glass full" href="{{ public_url }}">Open poll →</a>
+</div>
+
+<div class="card">
+  <h2 class="h-sm">🔒 Your private results link</h2>
+  <p class="muted">
+    Keep this safe. It lets you view detailed results and close the poll. Don't share it.
+  </p>
+  <label>Creator admin link</label>
+  <input class="form-control mono" type="text" value="{{ admin_url }}" readonly />
+  <a class="btn-glass ghost full" href="{{ admin_url }}">Open dashboard →</a>
+</div>
+{% endblock %}
